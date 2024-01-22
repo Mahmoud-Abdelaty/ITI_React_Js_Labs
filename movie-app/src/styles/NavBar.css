@@ -1,6 +1,5 @@
 body {
   background-color: #000000;
-  color: white;
 }
 
 nav {
@@ -8,7 +7,7 @@ nav {
   display: flex;
   justify-content: space-between;
   height: 50px;
-  background-color: #8c0000;
+  background-color: yellow;
   align-items: center;
 }
 nav h1 {
@@ -28,7 +27,7 @@ nav span {
 }
 nav span:hover {
   color: grey;
-  border-bottom: 2px solid indigo;
+  border-bottom: 2px solid black;
   padding-bottom: 5px;
 }
 
@@ -36,13 +35,8 @@ nav span:hover {
   display: flex;
   align-items: center;
 }
-#heading {
-  color: #ff206e;
-}
 
 .nav-link {
-  text-decoration: none;
-
   padding: 10px;
-  color: rgb(255, 255, 255);
+  color: black;
 }

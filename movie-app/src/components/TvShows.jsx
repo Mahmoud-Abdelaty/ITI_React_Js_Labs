@@ -1,14 +1,15 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
-import ImageNotFound from "../imageNotFound.png";
 import "../styles/Movies.css";
+import { Link } from "react-router-dom";
+import ImageNotFound from "../imageNotFound.png";
 
 export default function TvShow() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const MoviesApi = "https://api.themoviedb.org/3/discover/tv";
   const ImagesApi = "https://image.tmdb.org/t/p/w500/";
 
@@ -16,7 +17,7 @@ export default function TvShow() {
     axios
       .get(MoviesApi, {
         params: {
-          api_key: "9813ce01a72ca1bd2ae25f091898b1c7",
+          api_key: "89bec5bfceade79df2f6f73c17371177",
         },
       })
       .then(({ data }) => {
@@ -31,6 +32,36 @@ export default function TvShow() {
         setLoading(false);
       });
   }, [error]);
+  const handleScroll = useCallback(() => {
+    const isTop = window.scrollY === 0;
+    setShowScrollButton(!isTop);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const scrollToBottom = useCallback(() => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  }, []);
+
+  const toggleScrollDirection = useCallback(() => {
+    if (window.scrollY === 0) {
+      scrollToBottom();
+    } else {
+      scrollToTop();
+    }
+  }, [scrollToTop, scrollToBottom]);
 
   return (
     <>
@@ -39,17 +70,22 @@ export default function TvShow() {
           <CircularProgress />
         ) : (
           data?.map((e) => (
-            <div className="container" key={e.id}>
+            <Link to={`/tv/${e.id}`} key={e.id} className="container">
               <img
                 src={
                   e.poster_path ? `${ImagesApi}${e.poster_path}` : ImageNotFound
                 }
-                alt="dd"
+                alt="Not Found"
               />
-              <h3 id="smaller-Text">{e.original_name}</h3>
-            </div>
+              <h3 className="smaller-Text">{e.name ?? "Not Found"}</h3>
+            </Link>
           ))
         )}
+        {
+          <button className="scroll-button" onClick={toggleScrollDirection}>
+            {!showScrollButton ? "🔻" : "🔺"}
+          </button>
+        }
       </div>
     </>
   );

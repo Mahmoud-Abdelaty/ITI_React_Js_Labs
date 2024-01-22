@@ -1,13 +1,15 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "../styles/Movies.css";
+import ImageNotFound from "../imageNotFound.png";
 
 export default function Movies() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const MoviesApi = "https://api.themoviedb.org/3/discover/movie";
   const ImagesApi = "https://image.tmdb.org/t/p/w500/";
 
@@ -15,13 +17,12 @@ export default function Movies() {
     axios
       .get(MoviesApi, {
         params: {
-          api_key: "9813ce01a72ca1bd2ae25f091898b1c7",
+          api_key: "89bec5bfceade79df2f6f73c17371177",
         },
       })
       .then(({ data }) => {
         const result = data.results;
         setData(result);
-        console.log(result);
       })
       .catch((e) => {
         setError(e);
@@ -30,6 +31,38 @@ export default function Movies() {
         setLoading(false);
       });
   }, [error]);
+
+  const handleScroll = useCallback(() => {
+    const isTop = window.scrollY === 0;
+    setShowScrollButton(!isTop);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const scrollToBottom = useCallback(() => {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth",
+    });
+  }, []);
+
+  const toggleScrollDirection = useCallback(() => {
+    if (window.scrollY === 0) {
+      scrollToBottom();
+    } else {
+      scrollToTop();
+    }
+  }, [scrollToTop, scrollToBottom]);
+
   return (
     <>
       <div className="movies-container">
@@ -37,12 +70,24 @@ export default function Movies() {
           <CircularProgress />
         ) : (
           data?.map((e) => (
-            <div className="container" key={e.id}>
-              <img src={`${ImagesApi}${e.poster_path}`} alt="Not Found" />
-              <h3 id="smaller-Text">{e.title}</h3>
-            </div>
+            <Link to={`/movie/${e.id}`} key={e.id} className="container">
+              <img
+                src={
+                  e.poster_path ? `${ImagesApi}${e.poster_path}` : ImageNotFound
+                }
+                alt="Not Found"
+              />
+              <h3 className="smaller-Text no-underline">
+                {e.title ?? "Not Found"}
+              </h3>
+            </Link>
           ))
         )}
+        {
+          <button className="scroll-button" onClick={toggleScrollDirection}>
+            {!showScrollButton ? "🔻" : "🔺"}
+          </button>
+        }
       </div>
     </>
   );

@@ -3,13 +3,16 @@ body {
 }
 .movies-container {
   display: flex;
+
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-left: 75px;
 }
 .movies-container img {
-  width: 220px;
-  height: 290px;
-  margin: 25px 10px;
+  width: 205px;
+
+  height: 300px;
+  margin: 30px 20px;
   border-radius: 18px;
 }
 
@@ -17,18 +20,43 @@ body {
 .movies-container img {
   cursor: pointer;
   flex-wrap: wrap;
+
   transition: 0.7s;
 }
 .movies-container img:hover {
   transform: scale(1.07);
 }
-#container {
+.container {
   position: relative;
+  color: yellow;
+  overflow: hidden;
+  text-decoration: none;
 }
 
-#smaller-Text {
+.smaller-Text {
   width: 100%;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   justify-content: center;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: yellow;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  outline: none;
+}
+
+button:hover {
+  background-color: rgb(130, 130, 0);
 }
