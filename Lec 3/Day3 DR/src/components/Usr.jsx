@@ -1,12 +1,12 @@
 import React from "react";
 
-export default function Usr(e) {
+export default function Usr(props) {
+  const type = (props.index + 1) % 2 === 0 ? "even" : "odd";
   return (
-    <>
-      <div>Name : {e.name}</div>
-      <div>Email : {e.email}</div>
-      <div>Phone : {e.phone}</div>
-      <hr />
-    </>
+    <tr className={type}>
+      <td>{props.name}</td>
+      <td> {props.email}</td>
+      <td>{props.phone}</td>
+    </tr>
   );
 }

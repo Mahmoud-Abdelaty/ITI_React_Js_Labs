@@ -1,0 +1,38 @@
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: auto;
+}
+
+h1 {
+  margin: auto;
+  text-align: center;
+  color: rgb(57, 0, 97);
+}
+
+.user-table th,
+.user-table td {
+  border: 1px solid rgb(197, 197, 197);
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+.odd {
+  background-color: rgb(57, 0, 97);
+  color: white;
+}
+
+.even {
+  background-color: rgb(141, 12, 233);
+  color: black;
+}
+
+.user-table th {
+  background-color: rgb(51, 51, 51);
+  color: white;
+}
+
+.user-table tbody tr:hover {
+  cursor: pointer;
+  background-color: rgb(161, 161, 161);
+}

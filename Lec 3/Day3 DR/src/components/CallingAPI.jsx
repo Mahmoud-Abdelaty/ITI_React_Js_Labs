@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Usr from "./Usr";
+import "../styles/User.css";
+
 export default function CallingAPI() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -19,11 +21,7 @@ export default function CallingAPI() {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
-
-  // if (loading) {
-  //   return <h1>Loadinnnnng...........</h1>;
-  // }
+  }, [error]);
 
   return (
     <>
@@ -32,10 +30,26 @@ export default function CallingAPI() {
         {loading ? (
           <h1>Loadinnnnng...........</h1>
         ) : (
-          data?.map((e) => {
-            // console.log(e);
-            return <Usr key={e.id} {...e} />;
-          })
+          <table className="user-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((e, index) => (
+                <Usr
+                  key={e.id}
+                  name={e.name}
+                  email={e.email}
+                  phone={e.phone}
+                  index={index}
+                />
+              ))}
+            </tbody>
+          </table>
         )}
       </pre>
     </>
